@@ -1,0 +1,23 @@
+package com.nicholas.student_api.controller;
+
+import com.nicholas.student_api.model.ErrorResponse;
+import com.nicholas.student_api.model.StudentNotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+    @ExceptionHandler(StudentNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleNotFound(StudentNotFoundException ex) {
+        return new ErrorResponse(404, ex.getMessage());
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleGeneral(Exception ex) {
+        return new ErrorResponse(500, "Terjadi kesalahan pada server");
+    }
+}
